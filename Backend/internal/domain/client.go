@@ -67,9 +67,9 @@ type UpdateClientRequest struct {
 //client response list
 
 type ClientListResponse struct {
-	Clients   []*Client `json:"clients"`
-	Total     int       `json:"total"`
-	Page      int       `json:"page"`
-	PageSize  int       `json:"page_size"`
-	TotalPage int       `json:"total_page"`
+	Clients    []*Client `json:"clients"`
+	Total      int       `json:"total"`
+	Page       int       `json:"page"`
+	PageSize   int       `json:"page_size"`
+	TotalPages int       `json:"total_pages"`
 }

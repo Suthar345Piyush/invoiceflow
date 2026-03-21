@@ -44,7 +44,7 @@ func (s *ClientService) CreateClient(userID uuid.UUID, req *domain.CreateClientR
 	query :=
 		`
 		       INSERT INTO clients (
-						 id , user_id , name , email , phone , company_name , address_line1 , address_line2 , city , state , postal_code , country , tax_id , notes , is_active , created_at , updated_at
+						 id, user_id, name, email, phone, company_name, address_line1, address_line2, city, state, postal_code, country, tax_id, notes, is_active, created_at, updated_at
 					 )  VALUES ($1 , $2 , $3 , $4 , $5 , $6 , $7 , $8 , $9 , $10 , $11 , $12 , $13 , $14 , $15, $16 , $17)
 		   `
 
@@ -68,12 +68,12 @@ func (s *ClientService) GetClientByID(userID, clientID uuid.UUID) (*domain.Clien
 
 	query :=
 		`
-		  SELECT id , user_id , name , email , phone , company_name , address_line1 , address_line2 , city , state,
-			postal_code , tax_id , notes , is_active , created_at , updated_at FROM clients WHERE id = $1 AND user_id = $2 AND is_active = true
+		  SELECT id, user_id, name, email, phone, company_name, address_line1, address_line2, city, state,
+			postal_code, country, tax_id, notes, is_active, created_at, updated_at FROM clients WHERE id = $1 AND user_id = $2 AND is_active = true
 		 `
 
 	err := s.db.QueryRow(query, clientID, userID).Scan(
-		&client.ID, &client.UserID, &client.Name, &client.Email, &client.CompanyName, &client.AddressLine1, &client.AddressLine2, &client.City, &client.State, &client.PostalCode, &client.TaxID, &client.Notes, &client.IsActive, &client.CreatedAt, &client.UpdatedAt,
+		&client.ID, &client.UserID, &client.Name, &client.Email, &client.Phone, &client.CompanyName, &client.AddressLine1, &client.AddressLine2, &client.City, &client.State, &client.PostalCode, &client.Country, &client.TaxID, &client.Notes, &client.IsActive, &client.CreatedAt, &client.UpdatedAt,
 	)
 
 	if err == sql.ErrNoRows {
@@ -88,7 +88,7 @@ func (s *ClientService) GetClientByID(userID, clientID uuid.UUID) (*domain.Clien
 
 }
 
-// getting user by their user id , response in return
+// getting clients by the user id , response in return
 
 func (s *ClientService) GetClientsByUserID(userID uuid.UUID, page, pageSize int) (*domain.ClientListResponse, error) {
 
@@ -118,8 +118,8 @@ func (s *ClientService) GetClientsByUserID(userID uuid.UUID, page, pageSize int)
 	// query for  getting clients
 
 	query :=
-		` SELECT id , user_id , name , email , phone , company_name , address_line1 , address_line2 ,
-				 city , state , postal_code , country  , tax_id , notes , is_active , created_at , updated_at FROM clients WHERE user_id = $1 AND is_active = true ORDER BY created_at DESC LIMIT $2 offset $3 
+		` SELECT id, user_id, name, email, phone, company_name, address_line1, address_line2,
+				 city , state, postal_code, country, tax_id, notes, is_active, created_at, updated_at FROM clients WHERE user_id = $1 AND is_active = true ORDER BY created_at DESC LIMIT $2 offset $3 
 			  `
 
 	rows, err := s.db.Query(query, userID, pageSize, offset)
@@ -156,11 +156,11 @@ func (s *ClientService) GetClientsByUserID(userID uuid.UUID, page, pageSize int)
 	totalPages := (total + pageSize - 1) / pageSize
 
 	return &domain.ClientListResponse{
-		Clients:   clients,
-		Total:     total,
-		Page:      page,
-		PageSize:  pageSize,
-		TotalPage: totalPages,
+		Clients:    clients,
+		Total:      total,
+		Page:       page,
+		PageSize:   pageSize,
+		TotalPages: totalPages,
 	}, nil
 
 }
@@ -184,15 +184,15 @@ func (s *ClientService) UpdateClient(userID, clientID uuid.UUID, req *domain.Upd
 			            name = COALESCE($1 , name),
 									email = COALESCE($2 , email),
 									phone = COALESCE($3 , phone),
-									company_name = COALESCE($4 , company_name),
-									address_line1 = COALESCE($5 , address_line1),
-									address_line2 = COALESCE($6 , address_line2),
-									city = COALESCE($7 , city),
-									state = COALESCE($8 , state),
-									postal_code = COALESCE($9 , postal_code),
-									country = COALESCE($10 , country),
-									tax_id = COALESCE($11 , tax_id),
-									notes = COALESCE($12 , notes),
+									company_name = COALESCE($4, company_name),
+									address_line1 = COALESCE($5, address_line1),
+									address_line2 = COALESCE($6, address_line2),
+									city = COALESCE($7, city),
+									state = COALESCE($8, state),
+									postal_code = COALESCE($9, postal_code),
+									country = COALESCE($10, country),
+									tax_id = COALESCE($11, tax_id),
+									notes = COALESCE($12, notes),
 									updated_at = $13
 
 								WHERE id = $14 AND  user_id = $15
@@ -228,7 +228,7 @@ func (s *ClientService) DeleteClient(userID, clientID uuid.UUID) error {
 	//deleting client carefully
 
 	query :=
-		`UPDATE clients SET is_active = false , updated_at = $1 WHERE id = $2 AND user_id = $3`
+		`UPDATE clients SET is_active = false, updated_at = $1 WHERE id = $2 AND user_id = $3`
 
 	_, err = s.db.Exec(query, time.Now(), clientID, userID)
 

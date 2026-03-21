@@ -79,12 +79,14 @@ func (h *ClientHandler) GetClient(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		util.WriteError(w, http.StatusBadRequest, errors.New("invalid client ID"))
+		return
 	}
 
 	client, err := h.clientService.GetClientByID(claims.UserID, clientID)
 
 	if err != nil {
 		util.WriteError(w, http.StatusNotFound, err)
+		return
 	}
 
 	util.WriteSuccess(w, http.StatusOK, client, "Client retrieved successfully")
@@ -134,6 +136,7 @@ func (h *ClientHandler) UpdateClient(w http.ResponseWriter, r *http.Request) {
 
 	if !ok {
 		util.WriteError(w, http.StatusUnauthorized, errors.New("unauthorized"))
+		return
 	}
 
 	clientIDStr := chi.URLParam(r, "id")
@@ -167,6 +170,7 @@ func (h *ClientHandler) UpdateClient(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		util.WriteError(w, http.StatusInternalServerError, err)
+		return
 	}
 
 	util.WriteSuccess(w, http.StatusOK, client, "Client updated successfully")

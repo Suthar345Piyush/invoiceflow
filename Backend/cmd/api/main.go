@@ -104,11 +104,11 @@ func main() {
 		r.Group(func(r chi.Router) {
 			r.Use(middleware.Auth(cfg.JWT.Secret))
 
-			// user routes
+			// getting registered user endpoint
 
 			r.Get("/users/me", userHandler.GetMe)
 
-			// client routes
+			// client endpoints
 
 			r.Route("/clients", func(r chi.Router) {
 				r.Get("/", clientHandler.ListClients)

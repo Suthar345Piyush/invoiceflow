@@ -15,7 +15,6 @@ import { InvoiceSummary } from "./InvoiceSummary";
 import { AuthModal } from "../ui/Modal";
 import type { InvoiceData } from "@/types/invoice";
 import { FileDown, Send, Save, ChevronDown, ChevronUp } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 
 
@@ -400,55 +399,59 @@ export function InvoiceForm({
 
             )}
 
+            {/* cta (call to action) buttons  */}
+
+            <div className="space-y-2">
+
+              <Button type="button" onClick={handleSubmit(generatePDF)} loading={generating} size="lg" className="w-full">
+
+                <FileDown size={16}/>
+
+                {generating ? "Generating..." : "Download PDF"}
+
+              </Button>
+
+              {/* save invoice button  */}
+
+              <Button type="button" onClick={handleSubmit(saveInvoice)} loading={saving} size="lg" className="w-full">
+
+                <Save size={16}/>
+
+                {saving ? "saving..." : "Save Invoice"}
+ 
+              </Button>
 
 
+              {isAuthenticated && (
 
+                <Button className="w-full" type="button" variant="ghost" onClick={handleSubmit(sendEmail)} loading={emailing} size="lg">
 
+                  <Send size={16}/>
 
+                  {emailing ? "Sending..." : "Send to Client"}
 
+                </Button>
+                 
+              )}
+
+            </div>
+
+            {!isAuthenticated && (
+
+              <p className="text-xs text-ink-400 text-center">
+
+                <button type="button" onClick={() => setShowAuthModal(true)} className="text-ink-600 font-medium hover:underline"> Sign up free</button>{" "}to save, manage & email invoices
+                
+                  </p>
+                )}
           </div>
-
-
-
-
-
-
-
-
-
-
 
         </form>
 
-
-
+        <AuthModal open={showAuthModal}  onClose={() => setShowAuthModal(false)} message={authMessage || undefined} onSuccess={() => router.refresh()}/>
 
         </>
-       
     )
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     
-
    
 }
 

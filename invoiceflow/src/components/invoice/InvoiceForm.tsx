@@ -239,13 +239,184 @@ export function InvoiceForm({
 
               {/* invoice details  */}
 
-              <div className="bg-white rounded-2xl border border-ink-200">
+              <div className="bg-white rounded-2xl border border-ink-100 shadow-sm overflow-hidden">
+                <div className="px-5 border-b border-ink-100">
+
+                  <SectionHeader id="details" title="Invoice Details" subtitle="Number, dates & currency"/>
+
+                </div>
+
+                {openSections.has("details") && (
+
+                   <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+                    <Input label="Invoice Number" {...register("invoiceNumber")} error={errors.invoiceNumber?.message} placeholder="INV-2025-001"/>
+
+                    <Input type="date" label="Issue Date" {...register("issueDate")} error={errors.issueDate?.message}/>
+
+                    <Input label="Due Date" {...register("dueDate")} error={errors.dueDate?.message} type="date"/>
+
+
+                    <Controller name="currency" control={control} render={({field}) => (
+                       
+                        <Select label="Currency" options={CURRENCIES.map((c) => ({
+                           value : c.code,
+                           label : c.label,
+                        }))} {...field} />
+
+                    )}/>
+
+                    <Input label="Tax Rate (%)" type="number" min="0" max="100" step="0.1" {...register("taxRate", {valueAsNumber : true})} placeholder="0" />
+
+                    </div>
+                )}
 
               </div>
 
+              {/* business info  */}
 
+              <div className="bg-white rounded-2xl border border-ink-100 shadow-sm overflow-hidden">
+                <div className="px-5 border-b border-ink-100">
+
+                  <SectionHeader id="business" title="Your Business" subtitle="Sender information"/>
+
+                </div>
+
+                {openSections.has("business") && (
+
+                       <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+                  <Input label="Business Name" {...register("business.name")} error={errors.business?.name?.message} placeholder="Wonix Studio"/>
+
+                  <Input type="email" label="Email" {...register("business.email")} error={errors.business?.email?.message} placeholder="wonix@studio.com"/>
+
+                  <Input label="Address" {...register("business.address")} placeholder="123 Main Street"/>
+
+                  <Input label="City" {...register("business.city")} placeholder="Mumbai"/>
+
+                  <Input label="Country" {...register("business.country")} placeholder="India"/>
+
+                  <Input label="Logo URL (optional)" {...register("business.logoUrl")} placeholder="https://..."/>
+
+           </div>
+         )}
+      </div>
+
+
+      {/* client information  */}
+
+      <div className="bg-white rounded-2xl border border-ink-100 shadow-sm overflow-hidden">
+                <div className="px-5 border-b border-ink-100">
+
+                  <SectionHeader id="client" title="Bill To" subtitle="Client information"/>
+
+                </div>
+
+                {openSections.has("client") && (
+
+                       <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                  <Input label="Client Name" {...register("client.name")} error={errors.client?.name?.message} placeholder="Alex Wayne"/>
+
+                  <Input type="email" label="Client Email" {...register("client.email")} error={errors?.client?.email?.message} placeholder="john@company.com"/>
+
+                  <Input label="Address" {...register("client.address")} placeholder="123 Main Street"/>
+
+                  <Input label="City" {...register("client.city")} placeholder="Mumbai"/>
+
+                  <Input label="Country" {...register("client.country")} placeholder="India"/>
+
+           </div>
+         )}
+      </div>
+
+
+
+      {/* line items  */}
+
+      <div className="bg-white rounded-2xl border border-ink-100 shadow-sm overflow-hidden">
+
+        <div className="px-5 border-b border-ink-100">
+
+           <SectionHeader id="items" title="Line Items" subtitle="Services or products"/>
+        </div>
+
+        {openSections.has("items") && (
+
+           <div className="p-5">
+            
+             <Controller name="lineItems"  control={control} render={({field}) => (
+      
+              <LineItemsTable items={field.value} currency={currency} onChange={field.onChange}/>
+    
+
+             )}/>
+            
+            </div>
+        )}
+
+      </div>
+
+
+      {/* same for notes  */}
+
+
+      <div className="bg-white rounded-2xl border border-ink-100 shadow-sm overflow-hidden">
+
+        <div className="px-5 border-b border-ink-100">
+
+           <SectionHeader id="notes" title="Notes" subtitle="Payment terms, thank you message, etc."/>
+        </div>
+
+        {openSections.has("notes") && (
+
+           <div className="p-5">
+
+            <Textarea {...register("notes")} rows={3} placeholder="e.g. Payment due within 30 days. Thank you for your business!"/>
              
+        
+            </div>
+        )}
+
+      </div>
+
           </div>
+
+
+          {/* summary and actions   */}
+
+          <div>
+            <InvoiceSummary lineItems={lineItems} taxRate={taxRate} currency={currency}/>
+
+            {/* guest page indicator  */}
+
+            {!isAuthenticated && !guestUsed && (
+
+              <div className="bg-brand-50 border border-brand-200 rounded-xl px-4 py-3 text-xs text-t-brand-800">
+
+                <span className="font-semibold">Free preview:</span> Download 1 invoice without signing up.
+
+                </div>
+
+            )}
+
+
+
+
+
+
+
+          </div>
+
+
+
+
+
+
+
+
+
+
 
         </form>
 

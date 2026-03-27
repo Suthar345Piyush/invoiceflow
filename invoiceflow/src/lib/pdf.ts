@@ -7,7 +7,7 @@ import { calculateTotals , formatCurrency } from "./invoice";
 
 // rendering the invoice as HTML string for puppeteer 
 
-export function renderInoiveHTML(invoice : InvoiceData) : string {
+export function renderInvoiceHTML(invoice : InvoiceData) : string {
       
     const {subtotal , taxAmount , total} = calculateTotals(
        invoice.lineItems,

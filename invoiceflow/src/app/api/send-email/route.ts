@@ -2,7 +2,7 @@
 
 // import { createClient } from "@/lib/supabase/server";
 // import { NextResponse } from "next/server";
-// // import {sendInvoiceEmail} from "@/lib/email";
+// import {sendInvoiceEmail} from "@/lib/email";
 // import {renderInvoiceHTML} from "@/lib/pdf";
 // import type { InvoiceData } from "@/types/invoice";
 

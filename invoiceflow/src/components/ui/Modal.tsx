@@ -199,7 +199,7 @@ export function AuthModal({open , onClose , onSuccess , message} : AuthModalProp
                  
                  <div className="relative">
 
-                  <User size={15} className="absolute ;left-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none mt-0.5"/>
+                  <User size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none mt-0.5"/>
 
                     <input type="text" placeholder="Full name" value={name} onChange={(e) => setName(e.target.value)} required className="w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border border-ink-200 hover:border-ink-300 focus:border-transparent focus:ring-2 focus:ring-brand-500 outline-none transition-all"/> 
 

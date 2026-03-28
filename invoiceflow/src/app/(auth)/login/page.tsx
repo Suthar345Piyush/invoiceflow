@@ -203,7 +203,7 @@ export default function LoginPage() {
 
                 <button onClick={() => {setMode(mode === "signup" ? "login" : "signup"); setError("");}} className="text-ink-900 font-medium hover:underline">
 
-                  {mode === "signup" ? "Sign in" : "Sing up free"}
+                  {mode === "signup" ? "Sign in" : "Sign up free"}
 
                 </button>
                 

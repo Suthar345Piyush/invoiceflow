@@ -391,7 +391,7 @@ export function InvoiceForm({
 
             {!isAuthenticated && !guestUsed && (
 
-              <div className="bg-brand-50 border border-brand-200 rounded-xl px-4 py-3 text-xs text-t-brand-800">
+              <div className="bg-brand-50 border border-brand-200 rounded-xl px-4 py-3 text-xs text-t-brand-800 mb-2">
 
                 <span className="font-semibold">Free preview:</span> Download 1 invoice without signing up.
 
@@ -403,7 +403,7 @@ export function InvoiceForm({
 
             <div className="space-y-2">
 
-              <Button type="button" onClick={handleSubmit(generatePDF)} loading={generating} size="lg" className="w-full">
+              <Button type="button" onClick={handleSubmit(generatePDF)} loading={generating} size="lg" className="w-full border border-ink-500 rounded-2xl cursor-pointer">
 
                 <FileDown size={16}/>
 
@@ -413,7 +413,7 @@ export function InvoiceForm({
 
               {/* save invoice button  */}
 
-              <Button type="button" onClick={handleSubmit(saveInvoice)} loading={saving} size="lg" className="w-full">
+              <Button type="button" onClick={handleSubmit(saveInvoice)} loading={saving} size="lg" className="w-full border border-ink-500 rounded-2xl cursor-pointer">
 
                 <Save size={16}/>
 
@@ -440,7 +440,7 @@ export function InvoiceForm({
 
               <p className="text-xs text-ink-400 text-center">
 
-                <button type="button" onClick={() => setShowAuthModal(true)} className="text-ink-600 font-medium hover:underline"> Sign up free</button>{" "}to save, manage & email invoices
+                <button type="button" onClick={() => setShowAuthModal(true)} className="text-ink-600 font-medium hover:underline mt-2 cursor-pointer"> Sign up free</button>{" "}to save, manage & email invoices
                 
                   </p>
                 )}

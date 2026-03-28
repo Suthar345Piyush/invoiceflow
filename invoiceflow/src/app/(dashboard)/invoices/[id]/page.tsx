@@ -14,6 +14,33 @@ interface PageProps {
     params : Promise<{id : string}>;
 }
 
+interface DBInvoiceRow {
+  id: string;
+  invoice_number: string;
+  issue_date: string;
+  due_date: string;
+  status: "draft" | "sent" | "paid" | "overdue";
+  currency: string;
+  tax_rate: number;
+  notes: string | null;
+  client_name: string;
+  client_email: string;
+  client_address: string;
+  client_city: string;
+  client_country: string;
+  business_name: string;
+  business_email: string;
+  business_address: string;
+  business_city: string;
+  business_country: string;
+  business_logo_url: string | null;
+  line_items: {
+    id: string;
+    description: string;
+    quantity: number;
+    rate: number;
+  }[];
+}
 
 
 export default async function InvoiceDetailPage({params} : PageProps) {
@@ -22,10 +49,12 @@ export default async function InvoiceDetailPage({params} : PageProps) {
 
     const supabase = await createClient();
 
-    const {data : invoice, error} = await supabase.from("invoices").selec("*, line_items(*)").eq("id", id).single();
+    const {data , error} = await supabase.from("invoices").select("*, line_items(*)").eq("id", id).single();
 
 
-    if(error || !invoice) notFound();
+    if(error || !data) notFound();
+
+    const invoice = data as unknown as DBInvoiceRow;
 
 
     const invoiceData: InvoiceData = {

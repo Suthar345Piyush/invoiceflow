@@ -154,14 +154,21 @@ export function InvoiceForm({
              body : JSON.stringify({invoice : data}),
           });
 
-          if(!res.ok) throw new Error("Save failed");
+          // if(!res.ok) throw new Error("Save failed");
 
           const json = await res.json();
 
+          if(!res.ok){
+             throw new Error(json.error ?? `Server error ${res.status}`);
+          }
+
           router.push(`/invoices/${json.id}`);
 
-       } catch {
-          alert("Failed to save invoice.");
+       } catch(err) {
+          const message  = err instanceof Error ? err.message : "unknown error";
+          alert(`Failed to save invoices: ${message}`);
+
+          console.error("saveInvoice error:", err);
        } finally {
           setSaving(false);
        }

@@ -95,7 +95,7 @@ export function AuthModal({open , onClose , onSuccess , message} : AuthModalProp
 
      return (
          
-       <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={(e) => e.currentTarget && onClose()}>
+       <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={(e) => e.currentTarget}>
 
 
         <div className="absolute inset-0 bg-ink-950/40 backdrop-blur-sm animate-fade-in" />

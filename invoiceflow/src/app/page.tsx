@@ -81,7 +81,7 @@ export default async function HomePage() {
 
             <div className="inline-flex items-center gap-1.5 bg-brand-100 text-brand-800 text-xs font-medium px-3 py-1 rounded-full mb-4">
 
-              <Zap size={14}/>
+              <Zap size={20} color="yellow"/>
               Free - no signup needed for your first invoice 
             </div>
 

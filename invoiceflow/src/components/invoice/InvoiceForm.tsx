@@ -72,12 +72,21 @@ export function InvoiceForm({
        });
     };
 
+   // initiallizing the state from localstorage directly
+
+   const [guestDownloaded, setGuestDownloaded] = useState(() => {
+      if(typeof window === "undefined") return guestUsed;
+
+      return guestUsed || localStorage.getItem("invoiceflow-guest-used") === "true";
+   });
+
+
 
     //function to generate pdf 
 
     const generatePDF = async (data : InvoiceFormValues) => {
        
-      if(!isAuthenticated && guestUsed){
+      if(!isAuthenticated && guestDownloaded){
         setAuthMessage("You've used your free invoice. Create an account to generate more.");
         setShowAuthModal(true);
         return;
@@ -112,6 +121,7 @@ export function InvoiceForm({
 
          if(!isAuthenticated) {
            localStorage.setItem("invoiceflow-guest-used", "true");
+           setGuestDownloaded(true);
          }
 
       } catch {
@@ -407,7 +417,7 @@ export function InvoiceForm({
 
                 <FileDown size={16}/>
 
-                {generating ? "Generating..." : "Download PDF"}
+                {generating ? "Downloading..." : "Download PDF"}
 
               </Button>
 
@@ -420,6 +430,8 @@ export function InvoiceForm({
                 {saving ? "saving..." : "Save Invoice"}
  
               </Button>
+              
+            
 
 
               {isAuthenticated && (

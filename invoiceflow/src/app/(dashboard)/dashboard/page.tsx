@@ -6,15 +6,30 @@ import {FilePlus, FileText, IndianRupeeIcon, Clock, CheckCircle, Icon} from "luc
 import { formatCurrency } from "@/lib/invoice";
 
 
+interface DBInvoiceRow {
+   id : string;
+   invoice_number : string;
+   due_date : string;
+   status : string;
+   currency : string;
+   tax_rate : number;
+   business_name : string;
+   client_name : string;
+   line_items : {quantity : number, rate : number}[];
+}
+
+
+
 export default async function DashboardPage() {
     const supabase = await createClient();
 
     const {data : {user}} = await supabase.auth.getUser();
 
-    const {data : invoices} = await supabase.from("invoices").select("*, line_items(*)").eq("user_id", user!.id).order("created_at", {ascending : false});
+    const {data } = await supabase.from("invoices").select("*, line_items(*)").eq("user_id", user!.id).order("created_at", {ascending : false});
     
     
-    const rows = invoices ?? [];
+    const rows = (data ?? []) as unknown as DBInvoiceRow[];
+    
 
     // computing some stats 
 
@@ -131,7 +146,7 @@ export default async function DashboardPage() {
                   <p className="text-sm font-medium text-ink-700">No invoices yet!!</p>
                   <p className="text-xs text-ink-400 mt-1">Create your first invoice to get started</p>
 
-                  <Link href="/invoice/new" className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-ink-900 hover:underline">
+                  <Link href="/invoices/new" className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-ink-900 hover:underline">
 
                     <FilePlus size={14}/>
                     Create Invoice
@@ -192,7 +207,7 @@ export default async function DashboardPage() {
                           <p className="text-sm font-medium text-ink-900">{formatCurrency(total, invoice.currency)}</p>
 
 
-                          <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wider uppercase ${STATUS_COLOR[invoices.status] || STATUS_COLOR.draft}`}>
+                          <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wider uppercase ${STATUS_COLOR[invoice.status] || STATUS_COLOR.draft}`}>
 
                             {invoice.status}
 

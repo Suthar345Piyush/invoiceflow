@@ -100,7 +100,7 @@ export function LineItemsTable({items, currency, onChange} : LineItemsTableProps
                   </div>
 
 
-                  <button onClick={() => removeItem(item.id)} disabled={items.length === 1} className="flex items-center justify-center w-8 h-8 rounded-lg text-ink-400 hover:text-red-500 hover:bg-red-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+                  <button onClick={() => removeItem(item.id)} disabled={items.length === 0} className="flex items-center justify-center w-8 h-8 rounded-lg text-ink-400 hover:text-red-500 hover:bg-red-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
 
                     <Trash2 size={14}/>
 
@@ -112,7 +112,7 @@ export function LineItemsTable({items, currency, onChange} : LineItemsTableProps
 
         {/* for adding item  button*/}
 
-   <button onClick={addItem} className="flex items-center gap-2 px-3 py-2  text-sm text-ink-500 hover:text-ink-800 hover:bg-ink-100 rounded-lg transition-all border border-dashed border-ink-200 hover:border-ink-400 w-full justify-center mt-1">
+   <button onClick={addItem} type="button" className="flex items-center gap-2 px-3 py-2  text-sm text-ink-500 hover:text-ink-800 hover:bg-ink-100 rounded-lg transition-all border border-dashed border-ink-200 hover:border-ink-400 w-full justify-center mt-1">
 
     <Plus size={14}/>
     Add line item

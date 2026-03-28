@@ -66,7 +66,7 @@ export default async function DashboardLayout({children}: {children : React.Reac
 
             <form action="/api/auth/signout" method="POST">
 
-              <button type="submit" className="ww-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-ink-500 hover:text-red-600 hover:bg-red-50 transition-colors font-medium">
+              <button type="submit" className="cursor-pointer ww-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-ink-500 hover:text-red-600 hover:bg-red-50 transition-colors font-medium">
 
                 <LogOut size={15}/>
                 Sign out

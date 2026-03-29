@@ -88,7 +88,7 @@ export async function POST(request : Request) {
 // optionally updating the invoice status to sent 
 
             if(invoice.id) {
-               await supabase.from("invoices").update({status: "sent" as const}).eq("id", invoice.id);
+               await supabase.from("invoices").update(status as never).eq("id", invoice.id);
             }
 
 

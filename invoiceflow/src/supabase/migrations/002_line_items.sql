@@ -31,18 +31,15 @@ create policy "Users can view line items of their invoices"
 
  -- insert policy 
 
- create policy "Users can insert line items of their invoices"
+ create policy "Users can insert line items for their invoices"
  on public.line_items for insert
- using (
+ with check(
    exists (
      select 1 from public.invoices
      where invoices.id = line_items.invoice_id
        and invoices.user_id = auth.uid()
    )
  );
-
-
-
 
 
 -- update policy  

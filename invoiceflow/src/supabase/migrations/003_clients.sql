@@ -1,4 +1,4 @@
- -- storage for  generated pdfs 
+ -- storage for storing generated pdfs 
 
 
  insert into storage.buckets (id, name, public)

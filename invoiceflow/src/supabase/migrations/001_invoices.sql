@@ -47,7 +47,7 @@ create table public.invoices (
 
 
     created_at timestamptz not null default now(),
-    upadated_at timestamptz not null default now()
+    updated_at timestamptz not null default now()
 );
 
 -- index for fast lookups  
@@ -65,6 +65,12 @@ begin
   return new;
 end;
 $$;
+
+
+-- -- dropping trigger if exists 
+
+-- drop trigger if exists invoices_updated_at on public.invoices;
+
 
 
 create trigger invoices_updated_at

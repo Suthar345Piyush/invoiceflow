@@ -47,7 +47,7 @@ create table public.invoices (
 
 
     created_at timestamptz not null default now(),
-    upadated_at timestamptz not null default now()
+    updated_at timestamptz not null default now()
 );
 
 -- index for fast lookups  

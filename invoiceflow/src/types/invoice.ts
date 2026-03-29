@@ -24,7 +24,7 @@ export interface BusinessInfo {
    address : string;
    city : string;
    country : string;
-   logoUrl?: string;
+   logoUrl?: string | null;
 }
 
 
@@ -38,7 +38,7 @@ export interface InvoiceData {
    business: BusinessInfo;
    lineItems : LineItem[];
    taxRate : number;
-   notes?: string;
+   notes?: string | null;
    currency : string;
 }
 

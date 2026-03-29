@@ -1,6 +1,6 @@
 // next supabase middleware part 
 
-import {createSeverClient} from "@supabase/ssr";
+import {createServerClient} from "@supabase/ssr";
 import { NextRequest , NextResponse } from "next/server";
 
 
@@ -11,7 +11,7 @@ export async function middleware(request : NextRequest) {
 
      // creating a supabase client  
 
-     const supabase = createSeverClient(
+     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 
@@ -43,7 +43,7 @@ export async function middleware(request : NextRequest) {
 
      // getting the current user session data
       
-     const {data : {user}} = await supabase.auth().getUser();
+     const {data : {user}} = await supabase.auth.getUser();
 
 
      const pathname = request.nextUrl.pathname;

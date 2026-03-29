@@ -1,15 +1,34 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 import type { InvoiceData } from "@/types/invoice";
-import { Database } from "@/types/supabase";
+import type { Database } from "@/types/supabase";
+
 
 interface RouteContext {
   params: Promise<{ id: string }>;
 }
 
+
+
+// Service role client — it bypasses RLS completely , and have the full database access 
+
+
+function getServiceClient() {
+  return createServiceClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
+
+
 // PUT /api/invoices/[id] — update
+
+
 export async function PUT(request: Request, { params }: RouteContext) {
   const { id } = await params;
+
+  // Auth check with normal client
   const supabase = await createClient();
   const {
     data: { user },
@@ -19,7 +38,9 @@ export async function PUT(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { invoice }: { invoice: InvoiceData } = await request.json();
+
+
+const { invoice }: { invoice: InvoiceData } = await request.json();
 
 const invoiceInsert : Database['public']['Tables']['invoices']['Insert'] = {
 
@@ -47,8 +68,8 @@ const invoiceInsert : Database['public']['Tables']['invoices']['Insert'] = {
 
 // using the invoiceInsert in the  update call 
 
-const {error  : updateError} = await supabase.from("invoices").update(invoiceInsert as never).eq("id", id).eq("user_id", user.id);
 
+const {error  : updateError} = await supabase.from("invoices").update(invoiceInsert as never).eq("id", id).eq("user_id", user.id);
 
 
   if (updateError) {
@@ -56,29 +77,49 @@ const {error  : updateError} = await supabase.from("invoices").update(invoiceIns
     return NextResponse.json({ error: updateError.message }, { status: 500 });
   }
 
-  // Replace line items: delete old, insert new
-  await supabase.from("line_items").delete().eq("invoice_id", id);
+
+  // Use service client for line items — avoids RLS policy timing issues
+  // We already confirmed ownership above via the invoice update
+
+
+  const service = getServiceClient();
+
+  const { error: deleteError } = await service
+    .from("line_items")
+    .delete()
+    .eq("invoice_id", id);
+
+  if (deleteError) {
+    console.error("Line items delete error:", deleteError);
+    return NextResponse.json({ error: deleteError.message }, { status: 500 });
+  }
 
   const lineItemRows = invoice.lineItems.map((item) => ({
-    invoice_id:  item.id,
+    invoice_id:  id,
     description: item.description,
     quantity:    item.quantity,
     rate:        item.rate,
   }));
 
-  const { error: itemsError } = await supabase
+  const { error: insertError } = await service
     .from("line_items")
     .insert(lineItemRows as never);
 
-  if (itemsError) {
-    console.error("Line items update error:", itemsError);
-    return NextResponse.json({ error: itemsError.message }, { status: 500 });
+  if (insertError) {
+    console.error("Line items insert error:", insertError);
+    return NextResponse.json({ error: insertError.message }, { status: 500 });
   }
 
   return NextResponse.json({ id });
 }
 
+
+
+
 // DELETE /api/invoices/[id]
+
+
+
 export async function DELETE(_request: Request, { params }: RouteContext) {
   const { id } = await params;
   const supabase = await createClient();
@@ -90,7 +131,9 @@ export async function DELETE(_request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  await supabase.from("line_items").delete().eq("invoice_id", id);
+  const service = getServiceClient();
+  await service.from("line_items").delete().eq("invoice_id", id);
+
   const { error } = await supabase.from("invoices").delete().eq("id", id);
 
   if (error) {

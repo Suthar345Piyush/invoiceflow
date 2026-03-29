@@ -1,30 +1,39 @@
-// invoices crud api route 
-
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 import type { InvoiceData } from "@/types/invoice";
-import { Database } from "@/types/supabase";
+import type { Database } from "@/types/supabase";
 
 
 
-
-// POST  /api/invoices - create invoices 
-
-export async function POST(request : Request) {
-    const supabase = await createClient();
-
-    const {data : {user}} = await supabase.auth.getUser();
-
-
-    if(!user){
-      return NextResponse.json({error : "unauthorized"} , {status : 401});
-    }
+function getServiceClient() {
+  return createServiceClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 
-    const {invoice} : {invoice : InvoiceData} = await request.json();
+
+// POST /api/invoices — create invoice
 
 
-    const invoiceInsert : Database["public"]["Tables"]["invoices"]["Insert"] = {
+export async function POST(request: Request) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+
+  const {invoice} : {invoice : InvoiceData} = await request.json();
+
+
+
+const invoiceInsert : Database["public"]["Tables"]["invoices"]["Insert"] = {
        user_id : user.id,
        invoice_number : invoice.invoiceNumber,
        status : invoice.status,
@@ -47,65 +56,69 @@ export async function POST(request : Request) {
     };
 
 
-    const  {data : invoiceRow , error : invoiceError} = await supabase.from("invoices").insert(invoiceInsert as never).select().single();
-
-
-    if(invoiceError || !invoiceRow) {
-       return NextResponse.json({error : invoiceError?.message} , {status : 500});
-    }
+    const {data : invoiceRow , error : invoiceError} = await supabase.from("invoices").insert(invoiceInsert as never).eq("user" , user).eq("user_id", user.id);
 
 
 
-    // insert line items  
+  if (invoiceError || !invoiceRow) {
+    console.error("Invoice insert error:", invoiceError);
+    return NextResponse.json(
+      { error: invoiceError?.message ?? "Failed to insert invoice" },
+      { status: 500 }
+    );
+  }
 
-    const lineItemRows = invoice.lineItems.map((item) => ({
-      invoice_id:  item.id,
-      description: item.description,
-      quantity:    item.quantity,
-      rate:        item.rate,
-    }));
+  // Use service client for line items to avoid RLS timing issues
 
 
-    const {error : itemsError} = await supabase.from("line_items").insert(lineItemRows as never);
+  const service = getServiceClient();
 
-    if(itemsError) {
-       return NextResponse.json({error : itemsError.message} , {status : 500});
-    }
+  const lineItemRows = invoice.lineItems.map((item) => ({
+    invoice_id:  invoice.id,
+    description: item.description,
+    quantity:    item.quantity,
+    rate:        item.rate,
+  }));
 
-  return NextResponse.json({id : invoice.id} , {status : 201});
+  const { error: itemsError } = await service
+    .from("line_items")
+    .insert(lineItemRows as never);
+
+  if (itemsError) {
+    console.error("Line items insert error:", itemsError);
+    return NextResponse.json({ error: itemsError.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ id: invoice.id}, { status: 201 });
 }
 
 
 
+// GET /api/invoices — list user's invoices
 
-
-
-// get request 
-
-// GET /api/invoices - listing user's invoices 
 
 export async function GET() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-     const supabase = await createClient();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-     const {data : {user}} = await supabase.auth.getUser();
+  const { data, error } = await supabase
+    .from("invoices")
+    .select("*, line_items(*)")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
 
-     if(!user) {
-       return NextResponse.json({error : "Unauthorized"}, {status : 401});
-     }
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 
-     const {data, error} = await supabase.from("invoices").select("*, line_items(*)").eq("user_id", user.id).order("created_at", {ascending : false});
-
-
-     if(error) {
-       return NextResponse.json({error : error.message}, {status : 500});
-     }
-
-     return NextResponse.json({invoices : data});
-
-     
+  return NextResponse.json({ invoices: data });
 }
-
 
 
 

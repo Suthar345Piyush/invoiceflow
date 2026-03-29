@@ -138,7 +138,7 @@ export default function LoginPage() {
 
                        <button
                         onClick={handleGoogle}
-                        className="w-full flex items-center justify-center gap-3 px-4 py-2.5 rounded-xl border border-ink-200 hover:border-ink-300 hover:bg-ink-50 transition-all text-sm font-medium text-ink-700 mb-5"
+                        className="cursor-pointer w-full flex items-center justify-center gap-3 px-4 py-2.5 rounded-xl border border-ink-200 hover:border-ink-300 hover:bg-ink-50 transition-all text-sm font-medium text-ink-700 mb-5"
                        >
                   <svg width="18" height="18" viewBox="0 0 18 18">
                     <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>

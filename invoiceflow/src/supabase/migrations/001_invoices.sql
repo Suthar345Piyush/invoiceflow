@@ -67,6 +67,12 @@ end;
 $$;
 
 
+-- -- dropping trigger if exists 
+
+-- drop trigger if exists invoices_updated_at on public.invoices;
+
+
+
 create trigger invoices_updated_at
   before update on public.invoices
   for each row execute procedure public.set_updated_at();

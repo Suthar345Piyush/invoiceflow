@@ -173,7 +173,7 @@ export function AuthModal({open , onClose , onSuccess , message} : AuthModalProp
 
                      <button
                        onClick={handleGoogle}
-                        className="w-full flex items-center justify-center gap-3 px-4 py-2.5 rounded-lg border border-ink-200 hover:border-ink-300 hover:bg-ink-50 transition-all text-sm font-medium text-ink-700 mb-5"
+                        className="w-full flex items-center justify-center gap-3 px-4 py-2.5 rounded-lg border border-ink-200 hover:border-ink-300 hover:bg-ink-50 transition-all text-sm font-medium text-ink-700 mb-5 cursor-pointer"
                       >
 
 

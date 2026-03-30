@@ -53,12 +53,9 @@ export async function PATCH(request: Request, { params }: RouteContext) {
     .single();
 
 
-
   if (!owned) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
-
-
 
   // Use service client for the update to avoid never type error
 

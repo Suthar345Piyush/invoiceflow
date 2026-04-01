@@ -31,6 +31,8 @@ export async function POST(request: Request) {
 
   const {invoice} : {invoice : InvoiceData} = await request.json();
 
+  const service = getServiceClient();
+
 
 
 const invoiceInsert : Database["public"]["Tables"]["invoices"]["Insert"] = {
@@ -56,9 +58,13 @@ const invoiceInsert : Database["public"]["Tables"]["invoices"]["Insert"] = {
     };
 
 
-    const {data : invoiceRow , error : invoiceError} = await supabase.from("invoices").insert(invoiceInsert as never).eq("user" , user).eq("user_id", user.id);
-
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const db = supabase as any;
+  const { data: invoiceRow, error: invoiceError } = await db
+    .from("invoices")
+    .insert(invoiceInsert)
+    .select("id")
+    .single() as { data: { id: string } | null; error: { message: string } | null };
 
   if (invoiceError || !invoiceRow) {
     console.error("Invoice insert error:", invoiceError);
@@ -70,11 +76,8 @@ const invoiceInsert : Database["public"]["Tables"]["invoices"]["Insert"] = {
 
   // Use service client for line items to avoid RLS timing issues
 
-
-  const service = getServiceClient();
-
   const lineItemRows = invoice.lineItems.map((item) => ({
-    invoice_id:  invoice.id,
+    invoice_id:  invoiceRow.id,
     description: item.description,
     quantity:    item.quantity,
     rate:        item.rate,
@@ -89,7 +92,7 @@ const invoiceInsert : Database["public"]["Tables"]["invoices"]["Insert"] = {
     return NextResponse.json({ error: itemsError.message }, { status: 500 });
   }
 
-  return NextResponse.json({ id: invoice.id}, { status: 201 });
+  return NextResponse.json({ id: invoiceRow.id }, { status: 201 });
 }
 
 

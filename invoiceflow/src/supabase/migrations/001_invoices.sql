@@ -93,6 +93,10 @@ create policy "Users can update their own invoices"
   on public.invoices for update
   using (auth.uid() = user_id);
 
+create policy "Users can insert their own invoices"
+  on public.invoices for insert
+  with check (auth.uid() = user_id);
+
 
 create policy "Users can delete their own invoices"
   on public.invoices for delete

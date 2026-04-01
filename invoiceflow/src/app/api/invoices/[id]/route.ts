@@ -42,8 +42,9 @@ export async function PUT(request: Request, { params }: RouteContext) {
 
 const { invoice }: { invoice: InvoiceData } = await request.json();
 
-const invoiceInsert : Database['public']['Tables']['invoices']['Insert'] = {
-
+// Use Update type — deliberately excludes `status` so the existing value is preserved in DB.
+// If we included status here, a "paid" invoice would be reset to "draft" on every save.
+const invoiceUpdate: Database['public']['Tables']['invoices']['Update'] = {
       invoice_number:     invoice.invoiceNumber,
       issue_date:         invoice.issueDate,
       due_date:           invoice.dueDate,
@@ -61,15 +62,16 @@ const invoiceInsert : Database['public']['Tables']['invoices']['Insert'] = {
       tax_rate:           invoice.taxRate,
       currency:           invoice.currency,
       notes:              invoice.notes ?? null,
-      user_id : user.id,
+      // ⚠️ status intentionally omitted — must never be overwritten by the form save
+};
 
-}
-
-
-// using the invoiceInsert in the  update call 
-
-
-const {error  : updateError} = await supabase.from("invoices").update(invoiceInsert as never).eq("id", id).eq("user_id", user.id);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = supabase as any;
+const { error: updateError } = await db
+  .from("invoices")
+  .update(invoiceUpdate)
+  .eq("id", id)
+  .eq("user_id", user.id);
 
 
   if (updateError) {

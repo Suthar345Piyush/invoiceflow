@@ -9,6 +9,7 @@ export type Json =
 export type InvoiceStatus = "draft" | "sent" | "paid" | "overdue";
 
 export interface Database {
+  __InternalSupabaseGenerated: true;
   public: {
     Tables: {
       invoices: {

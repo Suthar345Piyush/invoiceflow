@@ -6,7 +6,7 @@
 
 import { useState , useEffect } from "react";
 import { useRouter , useSearchParams } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "../../../lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import {Mail, Lock, User, ArrowLeft} from "lucide-react";

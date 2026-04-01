@@ -60,10 +60,11 @@ export async function PATCH(request: Request, { params }: RouteContext) {
   // Use service client for the update to avoid never type error
 
 
-  const service = getServiceClient();
-  const { error } = await service
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const db = getServiceClient() as any;
+  const { error } = await db
     .from("invoices")
-    .update(status as never)
+    .update({ status })
     .eq("id", id);
 
 

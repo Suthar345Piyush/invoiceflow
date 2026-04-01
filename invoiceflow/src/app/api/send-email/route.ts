@@ -58,9 +58,11 @@ export async function POST(request: Request) {
 
 
     if (invoice.id) {
-      await supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const db = supabase as any;
+      await db
         .from("invoices")
-        .update(status as never)
+        .update({ status: "sent" })
         .eq("id", invoice.id);
     }
 

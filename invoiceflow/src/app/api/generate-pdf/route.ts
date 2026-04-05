@@ -37,7 +37,6 @@ export async function POST(request: Request) {
           format: "A4",
           margin: { top: 0, bottom: 0, left: 0, right: 0 },
           sandbox: false,        
-          wait_for: "networkidle2",
         }),
       });
  

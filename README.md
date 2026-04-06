@@ -6,14 +6,14 @@ Invoiceflow, an invoice builder where user (freelancers, small businesses) can c
 
 ## Features
 
--- Create professional invoice with support of three currency (Rupees, Dollars, Euro) as per now.
--- Download them as PDF to you local machine.
--- Edit them, update the status (paid or not).
--- Sent invoice to your client's email directly. (underdevelopment) 
--- Simple Sign up with your google account.
--- Free trial on your first invoice.
--- Simple clean HTML template to PDF conversion.
--- No fancy UI, simple and clean UI to just get your work done instantly
+- Create professional invoice with support of three currency (Rupees, Dollars, Euro) as per now.
+- Download them as PDF to you local machine.
+- Edit them, update the status (paid or not).
+- Sent invoice to your client's email directly. (underdevelopment) 
+- Simple Sign up with your google account.
+- Free trial on your first invoice.
+- Simple clean HTML template to PDF conversion.
+- No fancy UI, simple and clean UI to just get your work done instantly
 
 ## TechStack 
 

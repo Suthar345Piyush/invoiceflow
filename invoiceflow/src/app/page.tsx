@@ -3,7 +3,7 @@
 import { InvoiceForm } from "@/components/invoice/InvoiceForm";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-import { FileText, Zap, Shield, Mail } from "lucide-react";
+import { FileText, Zap, Shield, Mail} from "lucide-react";
 
 
 
@@ -132,7 +132,17 @@ export default async function HomePage() {
 
             @ {new Date().getFullYear()} Invoiceflow . Built for freelancers & small businesses
 
+
+            
+
           </div>
+
+          <div className="flex flex-row items-end justify-end pr-6 pb-6 gap-1.5">
+           Built with ❤️ by {<Link href="https://piyushtwtz.vercel.app/" className="font-semibold text-balck hover:underline">Piyush</Link>}
+          </div>
+
+
+
 
         </footer>
 

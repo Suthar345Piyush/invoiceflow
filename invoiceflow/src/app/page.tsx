@@ -4,6 +4,10 @@ import { InvoiceForm } from "@/components/invoice/InvoiceForm";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { FileText, Zap, Shield, Mail} from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+
+
 
 
 
@@ -128,25 +132,40 @@ export default async function HomePage() {
 
         <footer className="border-t border-ink-100 mt-16 py-8">
 
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center text-xs text-ink-400">
-
+          <div className="max-w-6xl mx-auto px-2 sm:px-6 text-center text-xs text-ink-400">
             @ {new Date().getFullYear()} Invoiceflow . Built for freelancers & small businesses
+          </div>
+
+            <div className="flex flex-wrap justify-center sm:justify-start gap-3 pl-5 sm:mt-5">
+    
+          
+            <a href="https://x.com/invoiceflow12" className="text-gray-700 hover:text-black">
+              <FaXTwitter size={25}/>
+            </a>
+        
 
 
+           <a href="https://github.com/Suthar345Piyush/invoiceflow" className="text-gray-700 hover:text-black">
+              <FaGithub size={25}/>
+            </a>
+     
             
+        </div>
 
-          </div>
+  
+     <div className="text-center sm:text-right text-sm sm:text-base pr-6 gap-4 px-3">
+        Built with ❤️ by 
 
-          <div className="flex flex-row items-end justify-end pr-6 pb-6 gap-1.5">
-           Built with ❤️ by {<Link href="https://piyushtwtz.vercel.app/" className="font-semibold text-balck hover:underline">Piyush</Link>}
-          </div>
+         <Link 
+           href="https://piyushtwtz.vercel.app/" 
+            className="font-semibold text-black hover:underline ml-0.5"
+        >
+            Piyush
+          </Link>
+         </div>
+    </footer>
 
-
-
-
-        </footer>
-
-
+         
 
 
 

@@ -2,6 +2,8 @@
 
 <img width="1684" height="797" alt="Screenshot 2026-04-06 124151" src="https://github.com/user-attachments/assets/139ebfc0-109d-4d69-9818-6f7c8a1a22ef" />
 
+## About 
+
 Invoiceflow, an invoice builder where user (freelancers, small businesses) can create an simple and clean invoice for client's, download them as PDF and sent to the client's email in under 2 minutes. A very quick, secure and direct email to client's service.In this application, you can generate one invoice as your free trial, without sign up on the application, after sign up user can generate more invoices, save them and can edit them later.
 
 ## Features

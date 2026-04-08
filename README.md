@@ -40,18 +40,6 @@ Contributions are welcome! Please follow these guidelines:
 4. Write tests if applicable
 5. Submit a pull request
 
-
-## Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Write tests if applicable
-5. Submit a pull request
-
-
 **Made with ❤️ by Piyush Suthar**
 
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Suthar345Piyush)

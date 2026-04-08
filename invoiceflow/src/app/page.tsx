@@ -62,7 +62,7 @@ export default async function HomePage() {
 
                   <Link href="/login?mode=signup" className="text-sm text-ink-900 font-medium px-3 py-1.5 rounded-lg hover:bg-ink-800 transition-colors">
 
-                    Sign up free
+                    Sign up
 
                   </Link>
                                  
@@ -85,12 +85,12 @@ export default async function HomePage() {
 
             <div className="inline-flex items-center gap-1.5 bg-brand-100 text-brand-800 text-xs font-medium px-3 py-1 rounded-full mb-4">
 
-              <Zap size={20} color="yellow"/>
+              <Zap size={18} color="orange"/>
               Free - no signup needed for your first invoice 
             </div>
 
-            <h1 className="text-4xl sm:text-5xl font-semibold text-ink-950 tracking-tight leading-tight">
-              Invoices that get you paid
+            <h1 className="text-4xl sm:text-5xl font-semibold text-ink-950 tracking-tight leading-tight text-shadow-gray-700">
+               Invoices that get you paid
             </h1>
 
             <p className="text-ink-500 text-lg mt-3 max-w-xl mx-auto leading-relaxed">Fill in your details, download a professional PDF, and sent it to your client - in under 2 minutes.</p>

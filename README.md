@@ -30,7 +30,7 @@ Invoiceflow, an invoice builder where user (freelancers, small businesses) can c
 - **TS-Validation** : Zod
 
 
-## Contributing
+## Open for contributions
 
 Contributions are welcome! Please follow these guidelines:
 

@@ -55,9 +55,9 @@ export default async function HomePage() {
               ) : (
                  <>
 
-                  <Link href="/login" className="text-sm text-ink-600 hover:text-ink-900 font-medium px-3 py-1.5 rounded-lg hover:bg-ink-100 transition-colors">
+                  {/* <Link href="/login" className="text-sm text-ink-600 hover:text-ink-900 font-medium px-3 py-1.5 rounded-lg hover:bg-ink-100 transition-colors">
                     Sign in
-                  </Link>
+                  </Link> */}
 
 
                   <Link href="/login?mode=signup" className="text-sm text-ink-900 font-medium px-3 py-1.5 rounded-lg hover:bg-ink-800 transition-colors">

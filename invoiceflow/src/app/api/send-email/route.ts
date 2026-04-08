@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { renderInvoiceHTML } from "@/lib/pdf";
 import { Resend } from "resend";
 import type { InvoiceData } from "@/types/invoice";
+import { Database } from "@/types/supabase";
+
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -67,7 +69,7 @@ export async function POST(request: Request) {
     if (invoice.id) {
       await supabase
         .from("invoices")
-        .update({ status: "sent" as const })
+        .update({status : "sent"} as never)
         .eq("id", invoice.id);
     }
 

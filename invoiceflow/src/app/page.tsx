@@ -47,6 +47,13 @@ export default async function HomePage() {
               {isAuthenticated ? (
                   <>
 
+                <Link
+                  href="/templates"
+                  className="text-sm text-ink-600 hover:text-ink-900 font-medium px-3 py-1.5 rounded-lg hover:bg-ink-100 transition-colors"
+                >
+                  Templates
+                </Link>
+
                   <Link href="/dashboard" className="text-sm text-ink-600 hover:text-ink-900 font-medium px-3 py-1.5 rounded-lg hover:bg-ink-100 transition-colors">
                     Dashboard
                   </Link>
@@ -61,11 +68,16 @@ export default async function HomePage() {
 
 
                   <Link href="/login?mode=signup" className="text-sm text-ink-900 font-medium px-3 py-1.5 rounded-lg hover:bg-ink-800 transition-colors">
-
                     Sign up
-
                   </Link>
-                                 
+
+                  <Link
+                  href="/templates"
+                  className="text-sm text-ink-600 hover:text-ink-900 font-medium px-3 py-1.5 rounded-lg hover:bg-ink-100 transition-colors"
+                >
+                  Templates
+                </Link>
+         
                  </>
               )}
 

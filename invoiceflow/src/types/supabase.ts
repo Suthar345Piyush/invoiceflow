@@ -7,11 +7,31 @@ export type Json =
   | Json[];
 
 export type InvoiceStatus = "draft" | "sent" | "paid" | "overdue"; 
+export type TemplateId = "classic" | "modern" | "minimal";
 
 export interface Database {
-  __InternalSupabaseGenerated: true;
   public: {
     Tables: {
+      profiles : {
+         Row : {
+           id: string;
+           selected_template: TemplateId;
+           created_at: string;
+           updated_at: string;
+         };
+         Insert : {
+           id?: string;
+           selected_template?: TemplateId;
+           created_at?: string;
+           updated_at?: string;
+         };
+         Update : {
+           id?: string;
+           selected_template?: TemplateId;
+           updated_at?: string;
+         };
+      };
+
       invoices: {
         Row: {
           id: string;
@@ -113,9 +133,9 @@ export interface Database {
           rate?: number;
         };
       };
-    };
-    Views: Record<string, never>;
-    Functions: Record<string, never>;
-    Enums: Record<string, never>;
+   };
+    Views: Record<string, unknown>;
+    Functions: Record<string, unknown>;
+    Enums: Record<string, unknown>;
   };
 }

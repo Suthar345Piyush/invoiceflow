@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { InvoiceData } from "@/types/invoice";
 import { renderInvoiceHTML } from "@/lib/pdf";
+import type { TemplateId } from "@/types/supabase";
  
 
 
@@ -14,13 +15,14 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const invoice: InvoiceData = body.invoice;
+    const templateId : TemplateId = body.templateId ?? "classic";
  
     if (!invoice) {
       return NextResponse.json({ error: "Invoice data required" }, { status: 400 });
     }
  
 
-    const html = renderInvoiceHTML(invoice);
+    const html = renderInvoiceHTML(invoice, templateId);
 
     // using pdf shift api key 
  

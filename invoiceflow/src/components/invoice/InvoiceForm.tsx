@@ -65,6 +65,18 @@ export function InvoiceForm({
     });
   };
 
+  const [userTemplate, setUserTemplate] = useState<string>("classic");
+
+   // fetching user's selected template on mount 
+
+   useState(() => {
+     if(isAuthenticated) {
+       fetch("/api/user/template").then((r) => r.json()).then((d) => setUserTemplate(d.template ?? "classic")).catch(() => {});
+     }
+   });
+
+
+
   const generatePDF = async (data: InvoiceFormValues) => {
     if (!isAuthenticated && guestUsed) {
       setAuthMessage("You've used your free invoice. Create an account to generate more.");

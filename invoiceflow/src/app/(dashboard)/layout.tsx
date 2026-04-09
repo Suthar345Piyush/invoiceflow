@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { LayoutDashboard , FilePlus, LogOut } from "lucide-react";
+import { LayoutDashboard , FilePlus, LogOut, LayoutTemplate } from "lucide-react";
 
 export default async function DashboardLayout({children}: {children : React.ReactNode}) {
     
@@ -40,16 +40,22 @@ export default async function DashboardLayout({children}: {children : React.Reac
           <nav className="flex-1 px-3 py-4 space-y-1">
 
             <Link href="/dashboard" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-ink-600 hover:text-ink-900 hover:bg-ink-50 transition-colors font-medium">
-
               <LayoutDashboard size={15}/>
               Dashboard
             </Link>
 
             <Link href="/invoices/new" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-ink-600 hover:text-ink-900 hover:bg-ink-50 transition-colors font-medium">
-
               <FilePlus size={15}/>
-
+              New Invoice
             </Link>
+
+            <Link
+            href="/templates"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-ink-600 hover:text-ink-900 hover:bg-ink-50 transition-colors font-medium"
+          >
+            <LayoutTemplate size={15} />
+            Templates
+          </Link>
           </nav>
 
 

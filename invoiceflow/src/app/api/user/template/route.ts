@@ -29,15 +29,27 @@ export async function GET() {
 
     if(!user) return NextResponse.json({template : "classic"});
 
-    const {data} = await supabase.from("profiles").select("selected_template").eq("id", user.id).single();
+    const service = getServiceClient();
+
+    // explicitly casting the query result to avoid type 'never' error  
+
+    // getting data directly from profiles about the selected template by users 
+   
+     const {data} = await service.from("profiles").select("selected_template").eq("id", user.id).single();
 
 
-    return NextResponse.json({template : data?.selected_template  ?? "classic"});
+     const profile = data as {selected_template : string} | null;
 
+     // retruning the response using this profile of the data with the selected template 
+
+     //returning selected template otherwise, returning the classic template 
+
+     return NextResponse.json({template : profile?.selected_template ?? "classic"});
 }
 
 
-// if user choose another template, then save it 
+// if user select another template, then we will select it and save it, for entire his download system and email id   
+
 
 export async function POST(request : Request) {
    
@@ -58,8 +70,7 @@ export async function POST(request : Request) {
 
    const service = getServiceClient();
 
-   await service.from("profiles").upsert({id : user.id, selected_template : template, updated_at: new Date().toISOString() }, {onConflict : "id"});
-
+   await service.from("profiles").upsert({id : user.id, selected_template : template} as never, {onConflict : "id"});
 
    return NextResponse.json({success : true, template});
    

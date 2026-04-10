@@ -5,23 +5,24 @@ import Link from "next/link";
 import {TemplatesClient} from "./TemplatesClient";
 
 
-
 export default async function TemplatePage() {
 
    const supabase = await createClient();
    const {data : {user}} = await supabase.auth.getUser();
-
    const isAuthenticated = !!user;
 
+   let currentTemplate = "classic";
+   
+   if(user) {
 
-     let currentTemplate = "classic";
+    // explicitly casting the query result to avoid the type 'never' ts error
 
-     if(user){
-       const {data} = await supabase.from("profiles").select("selected_template").eq("id", user.id).single();
+      const {data} = await supabase.from("profiles").select("selected_template").eq("id", user.id).single();
 
-       currentTemplate = data?.selected_template ?? "classic";
+      const profile = data as {selected_template : string} | null;
 
-     }
+      currentTemplate = profile?.selected_template ?? "classic";
+   }
 
    return (
       

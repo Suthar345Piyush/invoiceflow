@@ -21,7 +21,7 @@ Invoiceflow, an invoice builder where user (freelancers, small businesses) can c
 
 - **Framework** : Nextjs 16.2
 - **Language**  : Typescript
-- **Database**  : Supabase (PostgresQL)
+- **Database**  : Supabase (PostgresQL / plpgsql)
 - **PDFConversion** : PDFShift API 
 - **State** : Zustand
 - **Styling** : TailwindCSS 

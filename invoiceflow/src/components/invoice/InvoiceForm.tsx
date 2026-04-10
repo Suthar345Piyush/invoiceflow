@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +14,8 @@ import { AuthModal } from "@/components/ui/Modal";
 import type { InvoiceData } from "@/types/invoice";
 import { FileDown, Send, Save, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+
 
 interface InvoiceFormProps {
   initialData?: Partial<InvoiceData>;
@@ -68,12 +70,12 @@ export function InvoiceForm({
   const [userTemplate, setUserTemplate] = useState<string>("classic");
 
    // fetching user's selected template on mount 
-
-   useState(() => {
+  
+   useEffect(() => {
      if(isAuthenticated) {
        fetch("/api/user/template").then((r) => r.json()).then((d) => setUserTemplate(d.template ?? "classic")).catch(() => {});
      }
-   });
+   }, [isAuthenticated]);
 
 
 
@@ -89,7 +91,7 @@ export function InvoiceForm({
       const res = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ invoice: data }),
+        body: JSON.stringify({ invoice: data , templateId : userTemplate}),
       });
       if (!res.ok) throw new Error("PDF generation failed");
       const blob = await res.blob();
@@ -167,7 +169,7 @@ export function InvoiceForm({
       const res = await fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ invoice: data }),
+        body: JSON.stringify({ invoice: data, templateId : userTemplate }),
       });
       if (!res.ok) throw new Error("Email failed");
       alert(`Invoice sent to ${data.client.email}`);

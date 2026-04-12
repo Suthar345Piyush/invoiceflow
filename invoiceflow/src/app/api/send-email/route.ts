@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { renderInvoiceHTML } from "@/lib/pdf";
 import { Resend } from "resend";
 import type { InvoiceData } from "@/types/invoice";
-import { Database } from "@/types/supabase";
+import { Database, TemplateId } from "@/types/supabase";
 
 
 export const runtime = "nodejs";
@@ -26,7 +26,6 @@ async function generatePDFBuffer(html: string): Promise<Buffer> {
     if (!response.ok) throw new Error(`PDFShift error: ${await response.text()}`);
     return Buffer.from(await response.arrayBuffer());
   }
-
   throw new Error("No PDF provider configured. Set PDFSHIFT_API_KEY in Vercel env vars.");
 }
 
@@ -38,12 +37,16 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const invoice: InvoiceData = body.invoice;
+    // getting the templateID for sending user chosen email template
+
+    const templateId : TemplateId = body.templateId ?? "classic";
+
 
     if (!invoice?.client?.email) {
       return NextResponse.json({ error: "Client email is required" }, { status: 400 });
     }
 
-    const html = renderInvoiceHTML(invoice);
+    const html = renderInvoiceHTML(invoice, templateId);
     const pdfBuffer = await generatePDFBuffer(html);
 
     const resend = new Resend(process.env.RESEND_API_KEY);
